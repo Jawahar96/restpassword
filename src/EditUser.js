@@ -48,7 +48,11 @@ function EditUser() {
 
   let loadUser=async()=>{
     try{
-      let user=await axios.get(`${env.api}/user/${params.id}`)
+      let user=await axios.get(`${env.api}/users/${params.id}`,{
+        headers  : {
+            "authorization" : window.localStorage.getItem("app-token")
+        }
+      })
       formik.setValues({
       
         name:user.data.name,

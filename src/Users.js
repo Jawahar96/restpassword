@@ -14,7 +14,11 @@ useEffect(()=>{
 
 let loadData=async()=>{
     setLoading(true)
-let users= await axios.get(`${env.api}/getuser` );
+let users= await axios.get(`${env.api}/getuser`,{
+    headers  : {
+        "authorization" : window.localStorage.getItem("app-token")
+    }
+} );
     setUsers(users.data)
     setLoading(false)
 }

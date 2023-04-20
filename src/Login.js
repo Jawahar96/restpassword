@@ -1,12 +1,15 @@
+import { useFormik } from 'formik'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { env } from './config'
 
 function Login() {
     const navigate=useNavigate()
     const username="Jawahar"
-    // const password="12345"
+const password="12345"
 let login=()=>{
-if(username == "Jawahar" ){
+if(username == "Jawahar" && password == "12345" ){
 
     navigate('/dashboard')
 }
@@ -14,6 +17,27 @@ else{
     alert("Incorrect credential")
 }
 }
+
+let formik =useFormik({
+    initialValues : {
+        email : "",
+        password : ""
+    },
+    onSubmit :  async (values)=>{
+        try{
+           let loginData =await  axios.post(`${env.api}/login`,values)
+           window.localStorage.setItem("App-token",loginData.token)
+           console.log(loginData);
+
+        }catch(error){
+            alert(error.response.data.message)
+            console.log(error);
+        }
+       
+            
+
+    },
+})
 
   return (
     <div>
@@ -30,15 +54,14 @@ else{
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" onSubmit={formik.handleSubmit}>
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address..."/>
+                                                id="exampleInputEmail" value={formik.values.email } onChange={formik.handleChange} name='email' />
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password"/>
+                                                id="exampleInputPassword"   value={formik.values.password} onChaange={formik.handleChange} name="password" />
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -47,7 +70,7 @@ else{
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <button onClick={login} class="btn btn-primary btn-user btn-block">
+                                        <button   type="submit" class="btn btn- primary btn-user btn-block">
                                             Login
                                         </button>
                                         <hr/>
