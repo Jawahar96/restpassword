@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {formik,useFormik} from 'formik';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { env } from './config';
 
 function EditUser() {
+  const [user,setUser]=useState(false)
   const params=useParams()
   const navigate=useNavigate()
          const formik= useFormik({

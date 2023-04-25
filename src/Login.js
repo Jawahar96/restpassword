@@ -26,6 +26,7 @@ let formik =useFormik({
     onSubmit :  async (values)=>{
         try{
            let loginData =await  axios.post(`${env.api}/login`,values)
+           navigate('/dashboard')
            window.localStorage.setItem("App-token",loginData.token)
            console.log(loginData);
 
